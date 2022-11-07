@@ -24,7 +24,34 @@ class ClothingController {
     }
   }
 
-  async get(req, res) {}
+  async get(req, res) {
+    const { brandId, typeId } = req.query;
+    let { page, limit } = req.query;
+    page = page || 1;
+    limit = limit || 10;
+    let offset = page * limit - limit;
+    let clothing;
+    if (!brandId && !typeId) {
+      clothing = await Clothing.findAll({ limit, offset });
+    }
+
+    if (brandId && !typeId) {
+      clothing = await Clothing.findAll({ where: { brandId }, limit, offset });
+    }
+
+    if (!brandId && typeId) {
+      clothing = await Clothing.findAll({ where: { typeId }, limit, offset });
+    }
+
+    if (brandId && typeId) {
+      clothing = await Clothing.findAll({
+        where: { brandId, typeId },
+        limit,
+        offset,
+      });
+    }
+    return res.json(clothing);
+  }
 
   async getById(req, res) {}
 
