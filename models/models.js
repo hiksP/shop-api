@@ -66,10 +66,10 @@ Clothing.belongsTo(Brand);
 Clothing.hasMany(Rating);
 Rating.belongsTo(Clothing);
 
-Clothing.hasHooks(BasketClothing);
+Clothing.hasMany(BasketClothing);
 BasketClothing.belongsTo(Clothing);
 
-Clothing.hasMany(ClothingInfo);
+Clothing.hasMany(ClothingInfo, { as: "info" });
 ClothingInfo.belongsTo(Clothing);
 
 Type.belongsToMany(Brand, { through: TypeBrand });
