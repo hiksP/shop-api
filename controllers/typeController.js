@@ -13,11 +13,14 @@ class TypeController {
     return res.json(types);
   }
 
-  // доделать отлов ошибок, удаления того что уже удалено
-  async delete(req, res) {
+  async delete(req, res, next) {
     const { id } = req.params;
     if (!id) {
-      ApiError.badRequest();
+      return next(ApiError.badRequest("Не задан ID"));
+    }
+    const elem = await Type.findByPk(id);
+    if (!elem) {
+      return next(ApiError.badRequest("Нет такого элемента"));
     }
     try {
       await Type.destroy({
@@ -27,7 +30,7 @@ class TypeController {
       });
       return res.status(200).json({ message: "Успешно удалено" });
     } catch (e) {
-      ApiError.internal(e);
+      next(ApiError.internal(e.message));
     }
   }
 }
