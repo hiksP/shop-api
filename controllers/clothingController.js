@@ -3,7 +3,6 @@ const path = require("path");
 const { Clothing, ClothingInfo } = require("../models/models");
 const ApiError = require("../error/ApiError");
 
-//доделать ошибки
 class ClothingController {
   async create(req, res, next) {
     try {
